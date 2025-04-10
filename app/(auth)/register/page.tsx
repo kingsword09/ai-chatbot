@@ -11,6 +11,7 @@ import { register, type RegisterActionState } from '../actions';
 import { toast } from '@/components/toast';
 
 export default function Page() {
+  console.log('QAQ page');
   const router = useRouter();
 
   const [email, setEmail] = useState('');

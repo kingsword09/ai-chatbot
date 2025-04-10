@@ -1,10 +1,10 @@
 import { config } from 'dotenv';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import postgres from 'postgres';
+import { drizzle } from 'drizzle-orm/pglite';
+import { migrate } from 'drizzle-orm/pglite/migrator';
+import { PGlite } from '@electric-sql/pglite';
 
 config({
-  path: '.env.local',
+  path: '.env',
 });
 
 const runMigrate = async () => {
@@ -12,8 +12,8 @@ const runMigrate = async () => {
     throw new Error('POSTGRES_URL is not defined');
   }
 
-  const connection = postgres(process.env.POSTGRES_URL, { max: 1 });
-  const db = drizzle(connection);
+  const pglite = new PGlite(process.env.PGLITE_PATH);
+  const db = drizzle(pglite, { logger: true });
 
   console.log('⏳ Running migrations...');
 

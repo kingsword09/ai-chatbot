@@ -2,15 +2,15 @@ import { config } from 'dotenv';
 import { defineConfig } from 'drizzle-kit';
 
 config({
-  path: '.env.local',
+  path: '.env',
 });
 
 export default defineConfig({
   schema: './lib/db/schema.ts',
   out: './lib/db/migrations',
   dialect: 'postgresql',
+  driver: 'pglite',
   dbCredentials: {
-    // biome-ignore lint: Forbidden non-null assertion.
-    url: process.env.POSTGRES_URL!,
+    url: process.env.PGLITE_PATH || ':memory:',
   },
 });

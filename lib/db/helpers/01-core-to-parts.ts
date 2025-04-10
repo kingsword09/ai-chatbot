@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import postgres from 'postgres';
+import { PGlite } from '@electric-sql/pglite';
 import {
   chat,
   message,
@@ -7,20 +7,16 @@ import {
   vote,
   voteDeprecated,
 } from '../schema';
-import { drizzle } from 'drizzle-orm/postgres-js';
+import { drizzle } from 'drizzle-orm/pglite';
 import { inArray } from 'drizzle-orm';
-import { appendResponseMessages, UIMessage } from 'ai';
+import { appendResponseMessages, type UIMessage } from 'ai';
 
 config({
-  path: '.env.local',
+  path: '.env',
 });
 
-if (!process.env.POSTGRES_URL) {
-  throw new Error('POSTGRES_URL environment variable is not set');
-}
-
-const client = postgres(process.env.POSTGRES_URL);
-const db = drizzle(client);
+const pglite = new PGlite(process.env.PGLITE_PATH);
+const db = drizzle(pglite);
 
 const BATCH_SIZE = 50; // Process 10 chats at a time
 const INSERT_BATCH_SIZE = 100; // Insert 100 messages at a time

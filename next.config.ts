@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  serverExternalPackages: ['@electric-sql/pglite'],
 };
 
 export default nextConfig;

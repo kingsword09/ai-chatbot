@@ -1,10 +1,19 @@
 import 'server-only';
 
 import { genSaltSync, hashSync } from 'bcrypt-ts';
-import { and, asc, desc, eq, gt, gte, inArray, lt, SQL } from 'drizzle-orm';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
-
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  gt,
+  gte,
+  inArray,
+  lt,
+  type SQL,
+} from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/pglite';
+import { PGlite } from '@electric-sql/pglite';
 import {
   user,
   chat,
@@ -15,22 +24,27 @@ import {
   message,
   vote,
   type DBMessage,
-  Chat,
+  type Chat,
 } from './schema';
-import { ArtifactKind } from '@/components/artifact';
+import type { ArtifactKind } from '@/components/artifact';
 
 // Optionally, if not using email/pass login, you can
 // use the Drizzle adapter for Auth.js / NextAuth
 // https://authjs.dev/reference/adapter/drizzle
 
-// biome-ignore lint: Forbidden non-null assertion.
-const client = postgres(process.env.POSTGRES_URL!);
-const db = drizzle(client);
+const pglite = new PGlite(process.env.PGLITE_PATH);
+console.log('pglite.dataDir', pglite.dataDir);
+const db = drizzle(pglite, { logger: true });
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {
+    console.log('user.email', user.email);
+    console.log('email', email);
+    const result = await db.select().from(user);
+    console.log('result', result);
     return await db.select().from(user).where(eq(user.email, email));
   } catch (error) {
+    console.log(error);
     console.error('Failed to get user from database');
     throw error;
   }
