@@ -21,9 +21,7 @@ export const {
     Credentials({
       credentials: {},
       async authorize({ email, password }: any) {
-        console.log('QAQ authorize', email, password);
         const users = await getUser(email);
-        console.log('QAQ getUser', email);
         if (users.length === 0) return null;
         // biome-ignore lint: Forbidden non-null assertion.
         const passwordsMatch = await compare(password, users[0].password!);

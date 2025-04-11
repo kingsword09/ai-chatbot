@@ -60,7 +60,6 @@ export const register = async (
       email: formData.get('email'),
       password: formData.get('password'),
     });
-    console.log('QAQ register', validatedData.email, validatedData.password);
 
     const [user] = await getUser(validatedData.email);
 
