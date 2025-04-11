@@ -8,8 +8,8 @@ config({
 });
 
 const runMigrate = async () => {
-  if (!process.env.POSTGRES_URL) {
-    throw new Error('POSTGRES_URL is not defined');
+  if (!process.env.PGLITE_PATH) {
+    throw new Error('PGLITE_PATH is not defined');
   }
 
   const pglite = new PGlite(process.env.PGLITE_PATH);

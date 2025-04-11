@@ -32,6 +32,10 @@ import type { ArtifactKind } from '@/components/artifact';
 // use the Drizzle adapter for Auth.js / NextAuth
 // https://authjs.dev/reference/adapter/drizzle
 
+if (!process.env.PGLITE_PATH) {
+  throw new Error('PGLITE_PATH is not defined');
+}
+
 const pglite = new PGlite(process.env.PGLITE_PATH);
 console.log('pglite.dataDir', pglite.dataDir);
 const db = drizzle(pglite, { logger: true });

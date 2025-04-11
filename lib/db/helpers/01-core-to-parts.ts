@@ -15,6 +15,10 @@ config({
   path: '.env',
 });
 
+if (!process.env.PGLITE_PATH) {
+  throw new Error('PGLITE_PATH is not defined');
+}
+
 const pglite = new PGlite(process.env.PGLITE_PATH);
 const db = drizzle(pglite);
 
