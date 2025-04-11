@@ -37,18 +37,12 @@ if (!process.env.PGLITE_PATH) {
 }
 
 const pglite = new PGlite(process.env.PGLITE_PATH);
-console.log('pglite.dataDir', pglite.dataDir);
 const db = drizzle(pglite, { logger: true });
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {
-    console.log('user.email', user.email);
-    console.log('email', email);
-    const result = await db.select().from(user);
-    console.log('result', result);
     return await db.select().from(user).where(eq(user.email, email));
   } catch (error) {
-    console.log(error);
     console.error('Failed to get user from database');
     throw error;
   }
